@@ -10,6 +10,7 @@
 #include <sstream>
 #include <stdexcept>
 
+
 #include <iomanip>
 // 线程安全的日志队列
 class LogQueue {
@@ -189,6 +190,37 @@ public:
    
 };
 
+void stressTest(Logger& logger, int threadCount, int logsPerThread) {
+    std::vector<std::thread> threads;
+    auto startTime = std::chrono::high_resolution_clock::now();
+
+    // 创建多个生产者线程
+    for (int i = 0; i < threadCount; ++i) {
+        threads.emplace_back([&logger, logsPerThread, i]() {
+            for (int j = 0; j < logsPerThread; ++j) {
+                logger.log(LogLevel::INFO, 
+                    "Thread[{}] - Message {}: This is a stress test log with values: {}, {:.2f}", 
+                    i, j, j * 10, 3.14159 * j);
+            }
+        });
+    }
+
+    // 等待所有线程完成
+    for (auto& t : threads) t.join();
+
+    auto endTime = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> duration = endTime - startTime;
+
+    // 输出测试结果
+    int totalLogs = threadCount * logsPerThread;
+    double logsPerSec = totalLogs / duration.count();
+    
+    std::cout << "\n=== 压力测试结果 ===" << std::endl;
+    std::cout << "线程数量: " << threadCount << std::endl;
+    std::cout << "总日志量: " << totalLogs << " 条" << std::endl;
+    std::cout << "总耗时: " << duration.count() << " 秒" << std::endl;
+    std::cout << "吞吐量: " << logsPerSec << " 条/秒" << std::endl;
+}
 
 
 int main(){
@@ -225,9 +257,26 @@ int main(){
         
         // 确保所有日志都被处理
         std::this_thread::sleep_for(std::chrono::seconds(1));
+
+    //   初始化日志系统（设置为最低级别以记录所有日志）
+        Logger logger("stress_test.log", LogLevel::TRACE);
+        
+        // 执行压力测试（参数：线程数，每线程日志量）
+        const int THREADS = 20;      // 并发线程数
+        const int LOGS_PER_THREAD = 5000; // 每线程写入量
+        
+        std::cout << "开始压力测试（" << THREADS << "线程 × " 
+                  << LOGS_PER_THREAD << "日志）..." << std::endl;
+        
+        stressTest(logger, THREADS, LOGS_PER_THREAD);
+        
+        // 等待队列清空
+        std::this_thread::sleep_for(std::chrono::seconds(2));
     }
     catch (const std::exception& ex) {
         std::cerr << "日志系统初始化失败: " << ex.what() << std::endl;
+        std::cerr << "测试失败: " << ex.what() << std::endl;
+        return 1;
     }
 
     return 0;
