@@ -119,11 +119,14 @@ stressTest(logger, 20, 5000); // 20线程各写5000条日志
 ```
 ### 结果
 ```bash
+Starting stress test (20 threads × 5000 logs)...
+
 === 压力测试结果 ===
 线程数量: 20
 总日志量: 100000 条
-总耗时: 0.87 秒
-吞吐量: 114942.53 条/秒
+总耗时: 3.52063 秒
+吞吐量: 28404 条/秒
+Stress test completed. Check 'stress_test.log' for output.
 
 ```
 ## 扩展性
