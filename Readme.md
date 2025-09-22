@@ -6,7 +6,7 @@
 ## 项目结构
 ```bash
 项目目录/
-├── include_/                    # 头文件目录
+├── include_/                   # 头文件目录
 │   ├── format_utils.h          # 格式化工具模板 (包含 formatMessage 函数)
 │   ├── log_level.h             # 日志级别枚举 (LogLevel) 与转换函数声明
 │   ├── log_queue.h             # 双缓冲日志队列类 (DoubleBufferedLogQueue) 声明
@@ -16,12 +16,12 @@
 │   ├── log_queue.cpp           # 双缓冲日志队列 (DoubleBufferedLogQueue) 实现
 │   ├── logger.cpp              # 主日志器 (Logger) 实现
 │   └── main.cpp                # 测试主程序
-└──── test/                       # 测试目录
-    ├── unit_test.h             # 单元测试声明
-    ├── unit_test.cpp           # 单元测试实现
-    ├── stress_test.h           # 压力测试声明
-    ├── stress_test.cpp         # 压力测试实现
-  
+├── test/                       # 测试目录
+│   ├── unit_test.h             # 单元测试声明
+│   ├── unit_test.cpp           # 单元测试实现
+│   ├── stress_test.h           # 压力测试声明
+│   └── stress_test.cpp         # 压力测试实现
+└── CMakelists.txt              # 主CMakeLists文件
 ```
 ## 核心设计目标：
 - 高性能: 采用异步操作和批量写入策略，减少 I/O 阻塞。
