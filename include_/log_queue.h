@@ -3,16 +3,23 @@
 #include <mutex>
 #include <queue>
 #include <condition_variable>
+#include <atomic>
 
-class LogQueue {
+
+class DoubleBufferedLogQueue {
 public:
-    LogQueue();
+    DoubleBufferedLogQueue(size_t buffer_size = 1024);
     void push(const std::string& msg);
-    bool pop(std::string& msg);
+    bool pop(std::vector<std::string>& batch);
     void shutdown();
 private:
-    std::queue<std::string> queue_;
-    std::mutex mutex_;
+    void trySwapBuffers();
+    
+    std::vector<std::string> frontBuffer_;  // 生产者写入
+    std::vector<std::string> backBuffer_;   // 消费者读取
+    
+    std::mutex writeMutex_, swapMutex_;
     std::condition_variable cond_var_;
-    bool is_shutdown_ = false;
+    std::atomic<bool> is_shutdown_{false};
+    const size_t maxBufferSize_;
 };

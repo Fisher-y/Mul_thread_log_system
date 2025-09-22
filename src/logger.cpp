@@ -39,11 +39,11 @@
 
 
      void Logger::processQueue() {
-        std::string msg;
-        while (log_queue_.pop(msg)) {
-            if (log_file_.good()) {
-            log_file_ << msg << std::endl;
-        }
+       std::vector<std::string> batch;
+         if (log_queue_.pop(batch)) {  // 批量获取日志
+            for (const auto& msg : batch) {
+                log_file_ << msg << "\n";  // 批量写入
+            }
         }
         log_file_.flush();
     }

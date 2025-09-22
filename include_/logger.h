@@ -28,7 +28,7 @@ public:
     static std::string getCurrentTime();
     void setLogLevel(LogLevel level);
 private:
-    LogQueue log_queue_;
+    DoubleBufferedLogQueue log_queue_;
     std::thread worker_thread_;
     std::ofstream log_file_;
     std::atomic<bool> exit_flag_;
