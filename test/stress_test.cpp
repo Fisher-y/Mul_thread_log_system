@@ -37,8 +37,8 @@ void run_stressTest() {
     try {
         Logger logger("stress_test.log", LogLevel::TRACE);
         
-        const int THREADS = 20;
-        const int LOGS_PER_THREAD = 5000;
+        const int THREADS = 30;
+        const int LOGS_PER_THREAD = 4000;
         
         std::cout << "Starting stress test (" << THREADS << " threads × " 
                   << LOGS_PER_THREAD << " logs)..." << std::endl;

@@ -258,7 +258,10 @@ int main(){
         // 确保所有日志都被处理
         std::this_thread::sleep_for(std::chrono::seconds(1));
 
-    //   初始化日志系统（设置为最低级别以记录所有日志）
+
+
+        
+      //初始化日志系统（设置为最低级别以记录所有日志）
         Logger logger("stress_test.log", LogLevel::TRACE);
         
         // 执行压力测试（参数：线程数，每线程日志量）
