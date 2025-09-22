@@ -3,6 +3,26 @@
 ## 项目概述
 
 这是一个基于C++11/14的高性能多线程日志系统，通过双缓冲队列和异步写入机制，实现了在高效记录日志的同时，最大限度地减少对主线程性能的影响，适合需要高吞吐量的应用场景。
+## 项目结构
+```bash
+项目目录/
+├── include_/                    # 头文件目录
+│   ├── format_utils.h          # 格式化工具模板 (包含 formatMessage 函数)
+│   ├── log_level.h             # 日志级别枚举 (LogLevel) 与转换函数声明
+│   ├── log_queue.h             # 双缓冲日志队列类 (DoubleBufferedLogQueue) 声明
+│   └── logger.h                # 主日志器类 (Logger) 声明
+├── src/                        # 源文件目录 (或与头文件同级)
+│   ├── log_level.cpp           # 日志级别转换函数 (levelToString) 实现
+│   ├── log_queue.cpp           # 双缓冲日志队列 (DoubleBufferedLogQueue) 实现
+│   ├── logger.cpp              # 主日志器 (Logger) 实现
+│   └── main.cpp                # 测试主程序
+└──── test/                       # 测试目录
+    ├── unit_test.h             # 单元测试声明
+    ├── unit_test.cpp           # 单元测试实现
+    ├── stress_test.h           # 压力测试声明
+    ├── stress_test.cpp         # 压力测试实现
+  
+```
 ## 核心设计目标：
 - 高性能: 采用异步操作和批量写入策略，减少 I/O 阻塞。
 - 线程安全: 确保多线程环境下日志记录的安全性和一致性。
