@@ -4,7 +4,7 @@
 #include <queue>
 #include <condition_variable>
 #include <atomic>
-
+#include <chrono>
 
 class DoubleBufferedLogQueue {
 public:
@@ -22,4 +22,6 @@ private:
     std::condition_variable cond_var_;
     std::atomic<bool> is_shutdown_{false};
     const size_t maxBufferSize_;
+
+    std::chrono::steady_clock::time_point lastSwapTime_; // 记录上次交换时间
 };
